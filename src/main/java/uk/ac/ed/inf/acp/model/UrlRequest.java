@@ -1,12 +1,15 @@
 package uk.ac.ed.inf.acp.model;
 
 public class UrlRequest {
-    private String url;
+    private String urlPath;
 
-    public String getUrl() {
-        return url;
+    public String getUrlPath() {
+        return urlPath;
     }
     UrlRequest(String url) {
-        this.url = url;
+        this.urlPath = url;
+    }
+    public void setUrlPath(String urlPath) {
+        this.urlPath = urlPath;
     }
 }

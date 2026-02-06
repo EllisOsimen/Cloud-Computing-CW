@@ -4,14 +4,16 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
+import uk.ac.ed.inf.acp.model.Drone;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class S3Service {
-
+    public final String SID = "s2347484";
     public final AmazonS3 s3Client; // This injects the AmazonS3 bean into this service now the client talks to localstack
 
     public S3Service(AmazonS3 s3Client) {
@@ -56,5 +58,9 @@ public class S3Service {
         } while (result.isTruncated());
 
         return null;
+    }
+
+    public void saveDroneToS3(Drone drone) throws JsonProcessingException {
+        s3Client.putObject(SID,drone.getName(),drone.toJson());
     }
 }
