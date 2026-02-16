@@ -1,0 +1,89 @@
+package uk.ac.ed.inf.acp.service;
+
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.dynamodb.model.*;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.thirdparty.jackson.core.JsonProcessingException;
+import uk.ac.ed.inf.acp.model.Drone;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public class DynamoDBService {
+    public final String SID = "s2347484";
+
+    public final DynamoDbClient dynamoDbClient;
+
+    public DynamoDBService(DynamoDbClient dynamoDbClient) {
+        this.dynamoDbClient = dynamoDbClient;
+    }
+
+    private Map<String, Object> convertItemToMap(Map<String, AttributeValue> item) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        item.forEach((key, value) -> result.put(key, convertAttributeValue(value)));
+        return result;
+    }
+
+    private Object convertAttributeValue(AttributeValue av) {
+        if (av.s() != null)    return av.s();
+        if (av.n() != null)    return new BigDecimal(av.n());
+        if (av.bool() != null) return av.bool();
+        if (av.hasM())         return convertItemToMap(av.m());
+        if (av.hasL())         return av.l().stream()
+                .map(this::convertAttributeValue)
+                .collect(Collectors.toList());
+        return null;
+    }
+
+    public List<Map<String,Object>> getAllItems(String table) {
+        List<Map<String, Object>> allItems = new ArrayList<>();
+        Map<String, AttributeValue> lastEvaluatedKey = null;
+
+        do {
+            ScanRequest.Builder scanRequest = ScanRequest.builder().tableName(table);
+            if (lastEvaluatedKey != null && !lastEvaluatedKey.isEmpty()) {
+                scanRequest.exclusiveStartKey(lastEvaluatedKey);
+            }
+
+            ScanResponse scanResponse = dynamoDbClient.scan(scanRequest.build());
+
+            scanResponse.items().stream().map(this::convertItemToMap).forEach(allItems::add);
+
+            lastEvaluatedKey = scanResponse.lastEvaluatedKey();
+        } while(lastEvaluatedKey != null && !lastEvaluatedKey.isEmpty());
+
+        return allItems;
+    }
+
+    public Map<String, Object> getItem(String table, String key) {
+        GetItemRequest request = GetItemRequest.builder()
+                .tableName(table)
+                .key(Map.of("key", AttributeValue.builder().s(key).build()))
+                .build();
+        GetItemResponse itemResponse = dynamoDbClient.getItem(request);
+
+        if (!itemResponse.hasItem()){
+            return null;
+        }
+        return convertItemToMap(itemResponse.item());
+    }
+
+    public void saveDroneToDynamo(Drone drone) throws JsonProcessingException {
+        String json = drone.toJson();
+
+        PutItemRequest request = PutItemRequest.builder()
+                .tableName(SID)
+                .item(Map.of("name", AttributeValue.builder().s(drone.getName()).build(),
+                        "data",AttributeValue.builder().s(json).build()
+                        ))
+                .build();
+
+        PutItemResponse itemResponse = dynamoDbClient.putItem(request);
+
+
+    }
+}

@@ -1,66 +1,68 @@
 package uk.ac.ed.inf.acp.service;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ListObjectsV2Request;
-import com.amazonaws.services.s3.model.ListObjectsV2Result;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.*;
+import software.amazon.awssdk.thirdparty.jackson.core.JsonProcessingException;
 import uk.ac.ed.inf.acp.model.Drone;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class S3Service {
     public final String SID = "s2347484";
-    public final AmazonS3 s3Client; // This injects the AmazonS3 bean into this service now the client talks to localstack
+    public final S3Client s3Client; // This injects the AmazonS3 bean into this service now the client talks to localstack
 
-    public S3Service(AmazonS3 s3Client) {
+    public S3Service(S3Client s3Client) {
         this.s3Client = s3Client;
     }
 
     public List<String> getAllObjectsFromBucket(String bucket){
         List<String> objectKeys = new ArrayList<>();
 
-        ListObjectsV2Request request = new ListObjectsV2Request().withBucketName(bucket);
+        ListObjectsV2Request request = ListObjectsV2Request.builder().bucket(bucket).build();
 
-        ListObjectsV2Result result;
+        ListObjectsV2Response response;
 
-        // The way that S3 returns it's files is by pages of around 1000 entries at a time, to not exhaust resources
-        do {
-            result = s3Client.listObjectsV2(request);
+        do{
+            response = s3Client.listObjectsV2(request);
 
-            for (S3ObjectSummary objectSummary : result.getObjectSummaries()){
-                objectKeys.add(objectSummary.getKey());
+            for (S3Object obj : response.contents()) {
+                String content = getObjectFromBucket(bucket, obj.key());
+                objectKeys.add(content);
             }
-            request.setContinuationToken(result.getNextContinuationToken()); // if there are pages you get a token, to continue from
-        } while (result.isTruncated());
+            request = ListObjectsV2Request.builder().bucket(bucket).continuationToken(response.continuationToken()).build();
+        } while (response.isTruncated());
 
-        return objectKeys;
+        return  objectKeys;
     }
 
     public String getObjectFromBucket(String bucket, String key){
 
-        ListObjectsV2Request request = new ListObjectsV2Request();
-
-        ListObjectsV2Result result;
-
-        do {
-            result = s3Client.listObjectsV2(request);
-
-            for (S3ObjectSummary objectSummary : result.getObjectSummaries()){
-                if (objectSummary.getKey().equals(key)){
-                    return objectSummary.getKey();
-                }
-            }
-            request.setContinuationToken(result.getNextContinuationToken());
-        } while (result.isTruncated());
-
-        return null;
+        GetObjectRequest request = GetObjectRequest.builder().bucket(bucket).key(key).build();
+        try(ResponseInputStream<GetObjectResponse> response = s3Client.getObject(request)){
+            return new String(response.readAllBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void saveDroneToS3(Drone drone) throws JsonProcessingException {
-        s3Client.putObject(SID,drone.getName(),drone.toJson());
+        String json = drone.toJson();
+
+        PutObjectRequest request = PutObjectRequest.builder()
+                .bucket(SID)
+                .key(drone.getName())
+                .contentType("application/json")
+                .build();
+
+        // V2 needs an explicit RequestBody wrapper around the content
+        s3Client.putObject(request, RequestBody.fromString(json));
     }
+
 }

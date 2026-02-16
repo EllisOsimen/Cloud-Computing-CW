@@ -9,6 +9,9 @@ public class Capability {
     Integer costInitial;
     Integer costFinal;
 
+    Capability(){
+
+    }
     Capability (Boolean cooling, Boolean heating, Integer capacity, Integer maxMoves, Integer costPerMove, Integer costInitial, Integer costFinal) {
         this.cooling = cooling;
         this.heating = heating;

@@ -1,11 +1,12 @@
 package uk.ac.ed.inf.acp.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import software.amazon.awssdk.thirdparty.jackson.core.JsonProcessingException;
 import uk.ac.ed.inf.acp.model.Drone;
 import uk.ac.ed.inf.acp.model.UrlRequest;
 import uk.ac.ed.inf.acp.service.DroneService;
+import uk.ac.ed.inf.acp.service.DynamoDBService;
 import uk.ac.ed.inf.acp.service.S3Service;
 
 import java.util.List;
@@ -15,10 +16,12 @@ public class AcpController {
 
     private final S3Service s3Service; //constants which will never change
     private final DroneService droneService;
+    private final DynamoDBService dynamoDBService;
 
-    public AcpController(S3Service s3Service, DroneService droneService) {
+    public AcpController(S3Service s3Service, DroneService droneService, DynamoDBService dynamoDBService) {
         this.s3Service = s3Service;
         this.droneService = droneService;
+        this.dynamoDBService = dynamoDBService;
     }
 
     @GetMapping("/api/v1/acp/all/s3/{bucket}")
@@ -49,5 +52,15 @@ public class AcpController {
             drone.setCostPer100Moves();
         }
         return ResponseEntity.ok(drones);
+    }
+
+    @PostMapping("/api/v1/acp/process/dynamo")
+    public ResponseEntity<Void> processDynamo(@RequestBody UrlRequest urlRequest) throws JsonProcessingException {
+        String url = urlRequest.getUrlPath();
+        List<Drone> drones = droneService.fetchDronesFromUrl(url);
+        for (Drone drone : drones) {
+            dynamoDBService.saveDroneToDynamo(drone);
+        }
+        return ResponseEntity.ok().build();
     }
 }

@@ -3,10 +3,14 @@ package uk.ac.ed.inf.acp.model;
 public class UrlRequest {
     private String urlPath;
 
+    public UrlRequest(){
+
+    }
     public String getUrlPath() {
         return urlPath;
     }
-    UrlRequest(String url) {
+
+    public UrlRequest(String url) {
         this.urlPath = url;
     }
     public void setUrlPath(String urlPath) {
