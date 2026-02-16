@@ -10,6 +10,7 @@ import uk.ac.ed.inf.acp.service.DynamoDBService;
 import uk.ac.ed.inf.acp.service.S3Service;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class AcpController {
@@ -52,6 +53,16 @@ public class AcpController {
             drone.setCostPer100Moves();
         }
         return ResponseEntity.ok(drones);
+    }
+
+    @GetMapping("/api/v1/acp/single/dynamo/{table}/{key}")
+    public ResponseEntity<Map<String,Object>> listDynamoObject(@PathVariable String table, @PathVariable String key){
+        return ResponseEntity.ok().body(dynamoDBService.getItem(table,key));
+    }
+
+    @GetMapping("/api/v1/acp/all/dynamo/{table}")
+    public ResponseEntity<List<Map<String,Object>>> listAllDynamo(@PathVariable String table){
+        return ResponseEntity.ok().body(dynamoDBService.getAllItems(table));
     }
 
     @PostMapping("/api/v1/acp/process/dynamo")
