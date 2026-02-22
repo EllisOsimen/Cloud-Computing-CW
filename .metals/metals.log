@@ -7172,3 +7172,26 @@ use --help for a list of possible options.
 2026.02.22 20:54:23 INFO  time: compiled acp in 0.29s
 Feb 22, 2026 8:54:30 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
+Feb 22, 2026 8:55:00 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.02.22 21:20:49 INFO  compiling acp (13 java sources)
+2026.02.22 21:20:49 WARN  Unexpected javac output: error: release version 21 not supported
+Usage: javac <options> <source files>
+use --help for a list of possible options.
+2026.02.22 21:20:49 WARN  javac exited with exit code 2
+2026.02.22 21:20:49 INFO  time: compiled acp in 0.29s
+2026.02.22 21:20:59 INFO  Created report: Optional[file:///C:/Users/ellis/OneDrive/Documents/ACP/Rest_Service/src/main/java/uk/ac/ed/inf/acp/model/Drone.java]
+2026.02.22 21:20:59 INFO  empty definition using pc, found symbol in pc: software/amazon/awssdk/thirdparty/jackson/core/JsonProcessingException# (full report at: "C:\Users\ellis\OneDrive\Documents\ACP\Rest_Service\.metals\.reports\metals-full\2026-02-22\r_empty-definition_(acp)_21-20-59-472.md")
+2026.02.22 21:20:59 INFO  compiling acp (13 java sources)
+2026.02.22 21:20:59 WARN  Unexpected javac output: error: release version 21 not supported
+Usage: javac <options> <source files>
+use --help for a list of possible options.
+2026.02.22 21:20:59 WARN  javac exited with exit code 2
+2026.02.22 21:20:59 INFO  time: compiled acp in 0.28s
+2026.02.22 21:21:07 INFO  empty definition using pc, found symbol in pc: software/amazon/awssdk/thirdparty/jackson/core/JsonProcessingException# (full report at: "C:\Users\ellis\OneDrive\Documents\ACP\Rest_Service\.metals\.reports\metals-full\2026-02-22\r_empty-definition_(acp)_21-20-59-472.md")
+2026.02.22 21:21:17 INFO  compiling acp (13 java sources)
+2026.02.22 21:21:17 WARN  Unexpected javac output: error: release version 21 not supported
+Usage: javac <options> <source files>
+use --help for a list of possible options.
+2026.02.22 21:21:17 WARN  javac exited with exit code 2
+2026.02.22 21:21:17 INFO  time: compiled acp in 0.3s
