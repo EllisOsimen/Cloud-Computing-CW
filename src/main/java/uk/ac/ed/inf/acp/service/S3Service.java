@@ -36,7 +36,7 @@ public class S3Service {
                 String content = getObjectFromBucket(bucket, obj.key());
                 objectKeys.add(content);
             }
-            request = ListObjectsV2Request.builder().bucket(bucket).continuationToken(response.continuationToken()).build();
+            request = ListObjectsV2Request.builder().bucket(bucket).continuationToken(response.nextContinuationToken()).build();
         } while (response.isTruncated());
 
         return  objectKeys;

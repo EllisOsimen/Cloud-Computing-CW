@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
+@Service
 public class DynamoDBService {
     public final String SID = "s2347484";
 
@@ -62,7 +64,7 @@ public class DynamoDBService {
     public Map<String, Object> getItem(String table, String key) {
         GetItemRequest request = GetItemRequest.builder()
                 .tableName(table)
-                .key(Map.of("key", AttributeValue.builder().s(key).build()))
+                .key(Map.of("name", AttributeValue.builder().s(key).build()))
                 .build();
         GetItemResponse itemResponse = dynamoDbClient.getItem(request);
 

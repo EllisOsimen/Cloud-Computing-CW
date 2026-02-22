@@ -11,7 +11,7 @@ public class Drone {
     String name;
     String id;
     Capability capability;
-    int costPer100Moves;
+    double costPer100Moves;
 
     public Drone(){}
 
@@ -52,7 +52,7 @@ public class Drone {
     public void setCostPer100Moves() {
         costPer100Moves = capability.costInitial + capability.costFinal + capability.costPerMove * 100;
     }
-    public int getCostPer100Moves() {
+    public double getCostPer100Moves() {
         return costPer100Moves;
     }
 }

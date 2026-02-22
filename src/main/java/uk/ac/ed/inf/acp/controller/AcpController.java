@@ -7,6 +7,7 @@ import uk.ac.ed.inf.acp.model.Drone;
 import uk.ac.ed.inf.acp.model.UrlRequest;
 import uk.ac.ed.inf.acp.service.DroneService;
 import uk.ac.ed.inf.acp.service.DynamoDBService;
+import uk.ac.ed.inf.acp.service.PostgresDBClient;
 import uk.ac.ed.inf.acp.service.S3Service;
 
 import java.util.List;
@@ -18,11 +19,13 @@ public class AcpController {
     private final S3Service s3Service; //constants which will never change
     private final DroneService droneService;
     private final DynamoDBService dynamoDBService;
+    private final PostgresDBClient postgresDBClient;
 
-    public AcpController(S3Service s3Service, DroneService droneService, DynamoDBService dynamoDBService) {
+    public AcpController(S3Service s3Service, DroneService droneService, DynamoDBService dynamoDBService, PostgresDBClient postgresDBClient) {
         this.s3Service = s3Service;
         this.droneService = droneService;
         this.dynamoDBService = dynamoDBService;
+        this.postgresDBClient = postgresDBClient;
     }
 
     @GetMapping("/api/v1/acp/all/s3/{bucket}")
@@ -71,6 +74,27 @@ public class AcpController {
         List<Drone> drones = droneService.fetchDronesFromUrl(url);
         for (Drone drone : drones) {
             dynamoDBService.saveDroneToDynamo(drone);
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/api/v1/acp/all/postgres/{table}")
+    public ResponseEntity<List<Map<String,Object>>> listAllPostgres(@PathVariable String table){
+        return ResponseEntity.ok().body(postgresDBClient.getItems(table));
+    }
+
+    @GetMapping("/api/v1/acp/single/postgres/{table}/{key}")
+    public ResponseEntity<Map<String,Object>> listPostgresObject(@PathVariable String table, @PathVariable String key){
+        return ResponseEntity.ok().body(postgresDBClient.getItem(table, key));
+    }
+
+    @PostMapping("/api/v1/acp/process/postgres")
+    public ResponseEntity<Void> processPostgres(@RequestBody UrlRequest urlRequest) throws JsonProcessingException {
+        String url = urlRequest.getUrlPath();
+        List<Drone> drones = droneService.fetchDronesFromUrl(url);
+        for (Drone drone : drones) {
+            drone.setCostPer100Moves();
+            postgresDBClient.saveDroneToPostgres(drone);
         }
         return ResponseEntity.ok().build();
     }
