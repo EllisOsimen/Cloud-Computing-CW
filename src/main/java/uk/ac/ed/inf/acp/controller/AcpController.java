@@ -98,4 +98,24 @@ public class AcpController {
         }
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/api/v1/acp/copy-content/dynamo/{table}")
+    public ResponseEntity<Void> copyPostgresToDynamo(@PathVariable String table) {
+        List<Map<String, Object>> rows = postgresDBClient.getItems(table);
+        for (Map<String, Object> row : rows) {
+            String uuid = java.util.UUID.randomUUID().toString();
+            dynamoDBService.saveMapToDynamo(uuid, row);
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/api/v1/acp/copy-content/S3/{table}")
+    public ResponseEntity<Void> copyPostgresToS3(@PathVariable String table) {
+        List<Map<String, Object>> rows = postgresDBClient.getItems(table);
+        for (Map<String, Object> row : rows) {
+            String uuid = java.util.UUID.randomUUID().toString();
+            s3Service.saveMapToS3(uuid, row);
+        }
+        return ResponseEntity.ok().build();
+    }
 }

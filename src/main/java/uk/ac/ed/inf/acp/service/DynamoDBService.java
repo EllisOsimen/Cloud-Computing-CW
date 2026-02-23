@@ -8,6 +8,7 @@ import uk.ac.ed.inf.acp.model.Drone;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,26 @@ public class DynamoDBService {
             return null;
         }
         return convertItemToMap(itemResponse.item());
+    }
+
+    private AttributeValue toAttributeValue(Object value) {
+        if (value == null) return AttributeValue.builder().nul(true).build();
+        if (value instanceof Boolean) return AttributeValue.builder().bool((Boolean) value).build();
+        if (value instanceof String) return AttributeValue.builder().s((String) value).build();
+        return AttributeValue.builder().n(value.toString()).build();
+    }
+
+    public void saveMapToDynamo(String uuid, Map<String, Object> data) {
+        Map<String, AttributeValue> item = new HashMap<>();
+        item.put("name", AttributeValue.builder().s(uuid).build());
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
+            item.put(entry.getKey(), toAttributeValue(entry.getValue()));
+        }
+        PutItemRequest request = PutItemRequest.builder()
+                .tableName(SID)
+                .item(item)
+                .build();
+        dynamoDbClient.putItem(request);
     }
 
     public void saveDroneToDynamo(Drone drone) throws JsonProcessingException {

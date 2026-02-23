@@ -7,11 +7,13 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.thirdparty.jackson.core.JsonProcessingException;
+import tools.jackson.databind.ObjectMapper;
 import uk.ac.ed.inf.acp.model.Drone;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class S3Service {
@@ -48,6 +50,21 @@ public class S3Service {
         try(ResponseInputStream<GetObjectResponse> response = s3Client.getObject(request)){
             return new String(response.readAllBytes());
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void saveMapToS3(String uuid, Map<String, Object> data) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(data);
+            PutObjectRequest request = PutObjectRequest.builder()
+                    .bucket(SID)
+                    .key(uuid)
+                    .contentType("application/json")
+                    .build();
+            s3Client.putObject(request, RequestBody.fromString(json));
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
