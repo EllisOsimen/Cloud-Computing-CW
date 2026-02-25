@@ -29,7 +29,7 @@ public class AcpController {
     }
 
     @GetMapping("/api/v1/acp/all/s3/{bucket}")
-    public ResponseEntity<List<String>> listAllS3Buckets(@PathVariable String bucket){
+    public ResponseEntity<List<Object>> listAllS3Buckets(@PathVariable String bucket){
         return ResponseEntity.ok().body(s3Service.getAllObjectsFromBucket(bucket));
     }
 
@@ -43,6 +43,7 @@ public class AcpController {
         String url = urlRequest.getUrlPath();
         List<Drone> drones = droneService.fetchDronesFromUrl(url);
         for (Drone drone : drones) {
+            drone.setCostPer100Moves();
             s3Service.saveDroneToS3(drone);
         }
         return ResponseEntity.ok().build();
@@ -73,6 +74,7 @@ public class AcpController {
         String url = urlRequest.getUrlPath();
         List<Drone> drones = droneService.fetchDronesFromUrl(url);
         for (Drone drone : drones) {
+            drone.setCostPer100Moves();
             dynamoDBService.saveDroneToDynamo(drone);
         }
         return ResponseEntity.ok().build();
@@ -88,13 +90,13 @@ public class AcpController {
         return ResponseEntity.ok().body(postgresDBClient.getItem(table, key));
     }
 
-    @PostMapping("/api/v1/acp/process/postgres")
-    public ResponseEntity<Void> processPostgres(@RequestBody UrlRequest urlRequest) throws JsonProcessingException {
+    @PostMapping("/api/v1/acp/process/postgres/{table}")
+    public ResponseEntity<Void> processPostgres(@PathVariable String table, @RequestBody UrlRequest urlRequest) throws JsonProcessingException {
         String url = urlRequest.getUrlPath();
         List<Drone> drones = droneService.fetchDronesFromUrl(url);
         for (Drone drone : drones) {
             drone.setCostPer100Moves();
-            postgresDBClient.saveDroneToPostgres(drone);
+            postgresDBClient.saveDroneToPostgres(drone, table);
         }
         return ResponseEntity.ok().build();
     }

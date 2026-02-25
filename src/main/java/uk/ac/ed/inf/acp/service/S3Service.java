@@ -24,8 +24,9 @@ public class S3Service {
         this.s3Client = s3Client;
     }
 
-    public List<String> getAllObjectsFromBucket(String bucket){
-        List<String> objectKeys = new ArrayList<>();
+    public List<Object> getAllObjectsFromBucket(String bucket){
+        List<Object> objects = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
 
         ListObjectsV2Request request = ListObjectsV2Request.builder().bucket(bucket).build();
 
@@ -36,12 +37,16 @@ public class S3Service {
 
             for (S3Object obj : response.contents()) {
                 String content = getObjectFromBucket(bucket, obj.key());
-                objectKeys.add(content);
+                try {
+                    objects.add(mapper.readValue(content, Object.class));
+                } catch (Exception e) {
+                    objects.add(content);
+                }
             }
             request = ListObjectsV2Request.builder().bucket(bucket).continuationToken(response.nextContinuationToken()).build();
         } while (response.isTruncated());
 
-        return  objectKeys;
+        return objects;
     }
 
     public String getObjectFromBucket(String bucket, String key){

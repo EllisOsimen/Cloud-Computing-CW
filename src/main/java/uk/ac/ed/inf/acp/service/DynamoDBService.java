@@ -96,17 +96,29 @@ public class DynamoDBService {
     }
 
     public void saveDroneToDynamo(Drone drone) throws JsonProcessingException {
-        String json = drone.toJson();
+        Map<String, AttributeValue> item = new HashMap<>();
+
+        // Top level fields
+        item.put("name", AttributeValue.builder().s(drone.getName()).build());
+        item.put("id", AttributeValue.builder().s(drone.getId()).build());
+        item.put("costPer100Moves", AttributeValue.builder().n(String.valueOf(drone.getCostPer100Moves())).build());
+
+        // Capability nested map
+        Map<String, AttributeValue> capability = new HashMap<>();
+        capability.put("capacity", AttributeValue.builder().n(String.valueOf(drone.getCapability().getCapacity())).build());
+        capability.put("maxMoves", AttributeValue.builder().n(String.valueOf(drone.getCapability().getMaxMoves())).build());
+        capability.put("costPerMove", AttributeValue.builder().n(String.valueOf(drone.getCapability().getCostPerMove())).build());
+        capability.put("costInitial", AttributeValue.builder().n(String.valueOf(drone.getCapability().getCostInitial())).build());
+        capability.put("costFinal", AttributeValue.builder().n(String.valueOf(drone.getCapability().getCostFinal())).build());
+        capability.put("cooling", AttributeValue.builder().bool(drone.getCapability().getCooling()).build());
+        capability.put("heating", AttributeValue.builder().bool(drone.getCapability().getHeating()).build());
+
+        item.put("capability", AttributeValue.builder().m(capability).build());
 
         PutItemRequest request = PutItemRequest.builder()
                 .tableName(SID)
-                .item(Map.of("name", AttributeValue.builder().s(drone.getName()).build(),
-                        "data",AttributeValue.builder().s(json).build()
-                        ))
+                .item(item)
                 .build();
-
-        PutItemResponse itemResponse = dynamoDbClient.putItem(request);
-
-
+        dynamoDbClient.putItem(request);
     }
 }

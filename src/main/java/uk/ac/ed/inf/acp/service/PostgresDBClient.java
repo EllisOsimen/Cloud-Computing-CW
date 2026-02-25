@@ -69,8 +69,8 @@ public class PostgresDBClient {
         }
     }
 
-    public void saveDroneToPostgres(Drone drone) {
-        String sql = "INSERT INTO " + SID
+    public void saveDroneToPostgres(Drone drone, String table) {
+        String sql = "INSERT INTO " + table
                 + " (name, id, cooling, heating, capacity, max_moves, cost_per_move, cost_initial, cost_final, cost_per_100_moves)"
                 + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                 + " ON CONFLICT (name) DO UPDATE SET"

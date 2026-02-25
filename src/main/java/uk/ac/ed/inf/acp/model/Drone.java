@@ -11,7 +11,7 @@ public class Drone {
     String name;
     String id;
     Capability capability;
-    double costPer100Moves;
+    Double costPer100Moves;
 
     public Drone(){}
 

@@ -23,6 +23,7 @@ public class PostgresConfig {
         config.setJdbcUrl(url);
         config.setUsername(username);
         config.setPassword(password);
+        config.setDriverClassName("org.postgresql.Driver");
         return new HikariDataSource(config);
     }
 

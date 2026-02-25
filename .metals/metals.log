@@ -7225,3 +7225,144 @@ Usage: javac <options> <source files>
 use --help for a list of possible options.
 2026.02.23 17:52:57 WARN  javac exited with exit code 2
 2026.02.23 17:52:57 INFO  time: compiled acp in 0.9s
+2026.02.23 18:10:19 INFO  compiling acp (13 java sources)
+2026.02.23 18:10:19 WARN  Unexpected javac output: error: release version 21 not supported
+Usage: javac <options> <source files>
+use --help for a list of possible options.
+2026.02.23 18:10:19 WARN  javac exited with exit code 2
+2026.02.23 18:10:19 INFO  time: compiled acp in 0.93s
+2026.02.23 18:10:20 INFO  compiling acp (13 java sources)
+2026.02.23 18:10:21 WARN  Unexpected javac output: error: release version 21 not supported
+Usage: javac <options> <source files>
+use --help for a list of possible options.
+2026.02.23 18:10:21 WARN  javac exited with exit code 2
+2026.02.23 18:10:21 INFO  time: compiled acp in 1.08s
+Feb 23, 2026 6:12:56 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.02.23 18:33:57 INFO  compiling acp (13 java sources)
+2026.02.23 18:33:57 WARN  Unexpected javac output: error: release version 21 not supported
+Usage: javac <options> <source files>
+use --help for a list of possible options.
+2026.02.23 18:33:57 WARN  javac exited with exit code 2
+2026.02.23 18:33:57 INFO  time: compiled acp in 0.71s
+2026.02.23 18:34:48 INFO  skipping build import with status 'Dismissed'
+2026.02.23 19:27:11 INFO  Shutting down server
+2026.02.23 19:27:11 INFO  Memory monitor stopped
+2026.02.23 19:27:11 INFO  shutting down Metals
+2026.02.23 19:27:11 INFO  Shut down connection with build server.
+2026.02.24 16:48:18 INFO  Started: Metals version 1.6.5 in folders 'C:\Users\ellis\OneDrive\Documents\ACP\Rest_Service' for client Visual Studio Code 1.109.5.
+2026.02.24 16:48:18 INFO  Memory monitor started
+2026.02.24 16:48:25 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.02.24 16:48:25 INFO  no build target found for C:\Users\ellis\OneDrive\Documents\ACP\Rest_Service\src\main\java\uk\ac\ed\inf\acp\controller\AcpController.java. Using fallback presentation compiler.
+2026.02.24 16:48:27 INFO  no build target found for C:\Users\ellis\OneDrive\Documents\ACP\Rest_Service\src\main\java\uk\ac\ed\inf\acp\controller\AcpController.java. Using fallback presentation compiler.
+2026.02.24 16:48:27 INFO  Attempting to connect to the build server...
+2026.02.24 16:48:27 INFO  No running Bloop server found, starting one.
+2026.02.24 16:48:32 INFO  Starting compilation server
+2026.02.24 16:48:32 INFO  no build target found for C:\Users\ellis\OneDrive\Documents\ACP\Rest_Service\src\main\java\uk\ac\ed\inf\acp\controller\AcpController.java. Using fallback presentation compiler.
+2026.02.24 16:48:37 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at C:\Users\ellis\OneDrive\Documents\ACP\Rest_Service\.metals\bsp.trace.json or C:\Users\ellis\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2026.02.24 16:48:38 INFO  time: Connected to build server in 9.92s
+2026.02.24 16:48:38 INFO  Connected to Build server: Bloop v2.0.18
+2026.02.24 16:48:38 INFO  time: Imported build in 0.51s
+2026.02.24 16:48:47 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.02.24 16:48:53 INFO  time: indexed workspace in 14s
+2026.02.24 16:48:54 INFO  compiling acp (13 java sources)
+2026.02.24 16:48:54 WARN  Unexpected javac output: error: release version 21 not supported
+Usage: javac <options> <source files>
+use --help for a list of possible options.
+2026.02.24 16:48:54 WARN  javac exited with exit code 2
+2026.02.24 16:48:54 INFO  time: compiled acp in 0.92s
+Feb 24, 2026 4:48:56 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 12
+Feb 24, 2026 4:48:56 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 13
+Feb 24, 2026 4:48:56 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 14
+Feb 24, 2026 4:52:19 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.02.24 16:56:22 INFO  Shutting down server
+2026.02.24 16:56:22 INFO  Memory monitor stopped
+2026.02.24 16:56:22 INFO  shutting down Metals
+2026.02.24 16:56:22 INFO  Shut down connection with build server.
+2026.02.24 16:56:22 INFO  Exiting server
+2026.02.25 14:03:00 INFO  Started: Metals version 1.6.5 in folders 'C:\Users\ellis\OneDrive\Documents\ACP\Rest_Service' for client Visual Studio Code 1.109.5.
+2026.02.25 14:03:00 INFO  Memory monitor started
+2026.02.25 14:03:02 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.02.25 14:03:02 INFO  no build target found for C:\Users\ellis\OneDrive\Documents\ACP\Rest_Service\src\main\java\uk\ac\ed\inf\acp\service\S3Service.java. Using fallback presentation compiler.
+2026.02.25 14:03:03 INFO  Attempting to connect to the build server...
+2026.02.25 14:03:03 INFO  No running Bloop server found, starting one.
+2026.02.25 14:03:07 INFO  Starting compilation server
+2026.02.25 14:03:11 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at C:\Users\ellis\OneDrive\Documents\ACP\Rest_Service\.metals\bsp.trace.json or C:\Users\ellis\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2026.02.25 14:03:12 INFO  time: Connected to build server in 9.31s
+2026.02.25 14:03:12 INFO  Connected to Build server: Bloop v2.0.18
+2026.02.25 14:03:13 INFO  time: Imported build in 0.54s
+2026.02.25 14:03:21 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.02.25 14:03:27 INFO  time: indexed workspace in 14s
+2026.02.25 14:03:29 INFO  compiling acp (13 java sources)
+2026.02.25 14:03:29 WARN  Unexpected javac output: error: release version 21 not supported
+Usage: javac <options> <source files>
+use --help for a list of possible options.
+2026.02.25 14:03:29 WARN  javac exited with exit code 2
+2026.02.25 14:03:29 INFO  time: compiled acp in 0.92s
+Feb 25, 2026 2:04:43 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Feb 25, 2026 2:04:50 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.02.25 14:09:05 INFO  Created report: Optional[file:///C:/Users/ellis/OneDrive/Documents/ACP/Rest_Service/src/main/java/uk/ac/ed/inf/acp/controller/AcpController.java]
+2026.02.25 14:09:05 INFO  empty definition using pc, found symbol in pc: _empty_/S3Service#getAllObjectsFromBucket# (full report at: "C:\Users\ellis\OneDrive\Documents\ACP\Rest_Service\.metals\.reports\metals-full\2026-02-25\r_empty-definition_(acp)_14-09-05-089.md")
+2026.02.25 14:09:09 INFO  compiling acp (13 java sources)
+2026.02.25 14:09:09 WARN  Unexpected javac output: error: release version 21 not supported
+Usage: javac <options> <source files>
+use --help for a list of possible options.
+2026.02.25 14:09:09 WARN  javac exited with exit code 2
+2026.02.25 14:09:09 INFO  time: compiled acp in 0.89s
+2026.02.25 14:09:10 INFO  compiling acp (13 java sources)
+2026.02.25 14:09:11 WARN  Unexpected javac output: error: release version 21 not supported
+Usage: javac <options> <source files>
+use --help for a list of possible options.
+2026.02.25 14:09:11 WARN  javac exited with exit code 2
+2026.02.25 14:09:11 INFO  time: compiled acp in 1.09s
+2026.02.25 14:09:18 INFO  empty definition using pc, found symbol in pc: _empty_/S3Service#getAllObjectsFromBucket# (full report at: "C:\Users\ellis\OneDrive\Documents\ACP\Rest_Service\.metals\.reports\metals-full\2026-02-25\r_empty-definition_(acp)_14-09-05-089.md")
+Feb 25, 2026 2:46:27 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 55
+2026.02.25 14:47:23 INFO  compiling acp (13 java sources)
+2026.02.25 14:47:23 WARN  Unexpected javac output: error: release version 21 not supported
+Usage: javac <options> <source files>
+use --help for a list of possible options.
+2026.02.25 14:47:23 WARN  javac exited with exit code 2
+2026.02.25 14:47:23 INFO  time: compiled acp in 0.61s
+2026.02.25 14:47:48 INFO  compiling acp (13 java sources)
+2026.02.25 14:47:48 WARN  Unexpected javac output: error: release version 21 not supported
+Usage: javac <options> <source files>
+use --help for a list of possible options.
+2026.02.25 14:47:48 WARN  javac exited with exit code 2
+2026.02.25 14:47:48 INFO  time: compiled acp in 0.6s
+Feb 25, 2026 2:47:52 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 111
+2026.02.25 14:47:57 INFO  compiling acp (13 java sources)
+2026.02.25 14:47:57 WARN  Unexpected javac output: error: release version 21 not supported
+Usage: javac <options> <source files>
+use --help for a list of possible options.
+2026.02.25 14:47:57 WARN  javac exited with exit code 2
+2026.02.25 14:47:57 INFO  time: compiled acp in 0.64s
+Feb 25, 2026 2:48:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 168
+Feb 25, 2026 2:48:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 173
+2026.02.25 14:48:18 INFO  compiling acp (13 java sources)
+2026.02.25 14:48:18 WARN  Unexpected javac output: error: release version 21 not supported
+Usage: javac <options> <source files>
+use --help for a list of possible options.
+2026.02.25 14:48:18 WARN  javac exited with exit code 2
+2026.02.25 14:48:18 INFO  time: compiled acp in 0.63s
+Feb 25, 2026 2:48:39 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 195
+Feb 25, 2026 2:49:27 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 226
+Feb 25, 2026 2:49:36 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 246
+2026.02.25 14:49:40 INFO  compiling acp (13 java sources)
+2026.02.25 14:49:40 WARN  Unexpected javac output: error: release version 21 not supported
+Usage: javac <options> <source files>
+use --help for a list of possible options.
+2026.02.25 14:49:40 WARN  javac exited with exit code 2
+2026.02.25 14:49:40 INFO  time: compiled acp in 0.66s
