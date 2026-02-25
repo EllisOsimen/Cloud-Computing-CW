@@ -3,11 +3,11 @@ package uk.ac.ed.inf.acp.model;
 public class Capability {
     Boolean cooling;
     Boolean heating;
-    Double capacity;
-    Double maxMoves;
-    Double costPerMove;
-    Double costInitial;
-    Double costFinal;
+    Double capacity = 0.0;
+    Double maxMoves = 0.0;
+    Double costPerMove = 0.0;
+    Double costInitial = 0.0;
+    Double costFinal = 0.0;
 
     Capability(){
 

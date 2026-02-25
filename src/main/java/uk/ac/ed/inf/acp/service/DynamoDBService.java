@@ -4,6 +4,7 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.thirdparty.jackson.core.JsonProcessingException;
+import tools.jackson.databind.ObjectMapper;
 import uk.ac.ed.inf.acp.model.Drone;
 
 import java.math.BigDecimal;
@@ -63,9 +64,18 @@ public class DynamoDBService {
     }
 
     public Map<String, Object> getItem(String table, String key) {
+        // Dynamically resolve the partition key name via DescribeTable
+        DescribeTableRequest describeRequest = DescribeTableRequest.builder().tableName(table).build();
+        String partitionKeyName = dynamoDbClient.describeTable(describeRequest)
+                .table().keySchema().stream()
+                .filter(k -> k.keyType() == KeyType.HASH)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No partition key found for table: " + table))
+                .attributeName();
+
         GetItemRequest request = GetItemRequest.builder()
                 .tableName(table)
-                .key(Map.of("name", AttributeValue.builder().s(key).build()))
+                .key(Map.of(partitionKeyName, AttributeValue.builder().s(key).build()))
                 .build();
         GetItemResponse itemResponse = dynamoDbClient.getItem(request);
 
@@ -82,6 +92,25 @@ public class DynamoDBService {
         return AttributeValue.builder().n(value.toString()).build();
     }
 
+    private AttributeValue objectToAttributeValue(Object value) {
+        if (value == null) return AttributeValue.builder().nul(true).build();
+        if (value instanceof Boolean) return AttributeValue.builder().bool((Boolean) value).build();
+        if (value instanceof String) return AttributeValue.builder().s((String) value).build();
+        if (value instanceof Number) return AttributeValue.builder().n(value.toString()).build();
+        if (value instanceof Map) {
+            Map<String, AttributeValue> m = new HashMap<>();
+            ((Map<?, ?>) value).forEach((k, v) -> m.put(k.toString(), objectToAttributeValue(v)));
+            return AttributeValue.builder().m(m).build();
+        }
+        if (value instanceof List) {
+            List<AttributeValue> l = ((List<?>) value).stream()
+                    .map(this::objectToAttributeValue)
+                    .collect(Collectors.toList());
+            return AttributeValue.builder().l(l).build();
+        }
+        return AttributeValue.builder().s(value.toString()).build();
+    }
+
     public void saveMapToDynamo(String uuid, Map<String, Object> data) {
         Map<String, AttributeValue> item = new HashMap<>();
         item.put("name", AttributeValue.builder().s(uuid).build());
@@ -96,24 +125,13 @@ public class DynamoDBService {
     }
 
     public void saveDroneToDynamo(Drone drone) throws JsonProcessingException {
+        // Store the entire drone as a single DynamoDB Map attribute, keyed by drone name
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> droneMap = mapper.readValue(drone.toJson(), Map.class);
+
         Map<String, AttributeValue> item = new HashMap<>();
-
-        // Top level fields
         item.put("name", AttributeValue.builder().s(drone.getName()).build());
-        item.put("id", AttributeValue.builder().s(drone.getId()).build());
-        item.put("costPer100Moves", AttributeValue.builder().n(String.valueOf(drone.getCostPer100Moves())).build());
-
-        // Capability nested map
-        Map<String, AttributeValue> capability = new HashMap<>();
-        capability.put("capacity", AttributeValue.builder().n(String.valueOf(drone.getCapability().getCapacity())).build());
-        capability.put("maxMoves", AttributeValue.builder().n(String.valueOf(drone.getCapability().getMaxMoves())).build());
-        capability.put("costPerMove", AttributeValue.builder().n(String.valueOf(drone.getCapability().getCostPerMove())).build());
-        capability.put("costInitial", AttributeValue.builder().n(String.valueOf(drone.getCapability().getCostInitial())).build());
-        capability.put("costFinal", AttributeValue.builder().n(String.valueOf(drone.getCapability().getCostFinal())).build());
-        capability.put("cooling", AttributeValue.builder().bool(drone.getCapability().getCooling()).build());
-        capability.put("heating", AttributeValue.builder().bool(drone.getCapability().getHeating()).build());
-
-        item.put("capability", AttributeValue.builder().m(capability).build());
+        item.put("data", objectToAttributeValue(droneMap));
 
         PutItemRequest request = PutItemRequest.builder()
                 .tableName(SID)
