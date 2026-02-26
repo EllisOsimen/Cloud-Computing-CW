@@ -9,10 +9,10 @@ public class Capability {
     Double costInitial = 0.0;
     Double costFinal = 0.0;
 
-    Capability(){
+    public Capability(){
 
     }
-    Capability (Boolean cooling, Boolean heating, Double capacity, Double maxMoves, Double costPerMove, Double costInitial, Double costFinal) {
+    public Capability (Boolean cooling, Boolean heating, Double capacity, Double maxMoves, Double costPerMove, Double costInitial, Double costFinal) {
         this.cooling = cooling;
         this.heating = heating;
         this.capacity = capacity != null ? capacity : 0;

@@ -30,12 +30,25 @@ public class AcpController {
 
     @GetMapping("/api/v1/acp/all/s3/{bucket}")
     public ResponseEntity<List<Object>> listAllS3Buckets(@PathVariable String bucket){
-        return ResponseEntity.ok().body(s3Service.getAllObjectsFromBucket(bucket));
+        try {
+            List<Object> objects = s3Service.getAllObjectsFromBucket(bucket);
+            return ResponseEntity.ok().body(objects);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/api/v1/acp/single/s3/{bucket}/{key}")
     public ResponseEntity<String> listS3Object(@PathVariable String bucket, @PathVariable String key){
-        return ResponseEntity.ok().body(s3Service.getObjectFromBucket(bucket, key));
+        try {
+            String object = s3Service.getObjectFromBucket(bucket, key);
+            if (object == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok().body(object);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/api/v1/acp/process/s3")
@@ -61,12 +74,25 @@ public class AcpController {
 
     @GetMapping("/api/v1/acp/single/dynamo/{table}/{key}")
     public ResponseEntity<Map<String,Object>> listDynamoObject(@PathVariable String table, @PathVariable String key){
-        return ResponseEntity.ok().body(dynamoDBService.getItem(table,key));
+        try {
+            Map<String, Object> item = dynamoDBService.getItem(table, key);
+            if (item == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok().body(item);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/api/v1/acp/all/dynamo/{table}")
     public ResponseEntity<List<Map<String,Object>>> listAllDynamo(@PathVariable String table){
-        return ResponseEntity.ok().body(dynamoDBService.getAllItems(table));
+        try {
+            List<Map<String, Object>> items = dynamoDBService.getAllItems(table);
+            return ResponseEntity.ok().body(items);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/api/v1/acp/process/dynamo")
@@ -82,12 +108,25 @@ public class AcpController {
 
     @GetMapping("/api/v1/acp/all/postgres/{table}")
     public ResponseEntity<List<Map<String,Object>>> listAllPostgres(@PathVariable String table){
-        return ResponseEntity.ok().body(postgresDBClient.getItems(table));
+        try {
+            List<Map<String, Object>> items = postgresDBClient.getItems(table);
+            return ResponseEntity.ok().body(items);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/api/v1/acp/single/postgres/{table}/{key}")
     public ResponseEntity<Map<String,Object>> listPostgresObject(@PathVariable String table, @PathVariable String key){
-        return ResponseEntity.ok().body(postgresDBClient.getItem(table, key));
+        try {
+            Map<String, Object> item = postgresDBClient.getItem(table, key);
+            if (item == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok().body(item);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/api/v1/acp/process/postgres/{table}")

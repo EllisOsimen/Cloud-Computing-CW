@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import software.amazon.awssdk.thirdparty.jackson.core.JsonProcessingException;
 import tools.jackson.databind.ObjectMapper;
 
-@JsonInclude(JsonInclude.Include.NON_NULL) // avoids serialising null fields
+@JsonInclude(JsonInclude.Include.NON_NULL) 
 public class Drone {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();

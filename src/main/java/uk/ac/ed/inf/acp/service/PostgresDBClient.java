@@ -1,6 +1,5 @@
 package uk.ac.ed.inf.acp.service;
 
-import uk.ac.ed.inf.acp.config.PostgresConfig;
 import uk.ac.ed.inf.acp.model.Drone;
 
 import javax.sql.DataSource;

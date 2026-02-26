@@ -2,9 +2,9 @@ package uk.ac.ed.inf.acp.service;
 
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.thirdparty.jackson.core.JsonProcessingException;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
 import uk.ac.ed.inf.acp.model.Drone;
 
 import java.math.BigDecimal;
@@ -114,9 +114,7 @@ public class DynamoDBService {
     public void saveMapToDynamo(String uuid, Map<String, Object> data) {
         Map<String, AttributeValue> item = new HashMap<>();
         item.put("name", AttributeValue.builder().s(uuid).build());
-        for (Map.Entry<String, Object> entry : data.entrySet()) {
-            item.put(entry.getKey(), toAttributeValue(entry.getValue()));
-        }
+        item.put("content", objectToAttributeValue(data));
         PutItemRequest request = PutItemRequest.builder()
                 .tableName(SID)
                 .item(item)
@@ -127,11 +125,11 @@ public class DynamoDBService {
     public void saveDroneToDynamo(Drone drone) throws JsonProcessingException {
         // Store the entire drone as a single DynamoDB Map attribute, keyed by drone name
         ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> droneMap = mapper.readValue(drone.toJson(), Map.class);
+        Map<String, Object> droneMap = mapper.readValue(drone.toJson(), new TypeReference<Map<String, Object>>() {});
 
         Map<String, AttributeValue> item = new HashMap<>();
         item.put("name", AttributeValue.builder().s(drone.getName()).build());
-        item.put("data", objectToAttributeValue(droneMap));
+        item.put("content", objectToAttributeValue(droneMap));
 
         PutItemRequest request = PutItemRequest.builder()
                 .tableName(SID)

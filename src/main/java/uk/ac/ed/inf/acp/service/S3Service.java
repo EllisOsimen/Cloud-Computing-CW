@@ -18,7 +18,7 @@ import java.util.Map;
 @Service
 public class S3Service {
     public final String SID = "s2347484";
-    public final S3Client s3Client; // This injects the AmazonS3 bean into this service now the client talks to localstack
+    public final S3Client s3Client; 
 
     public S3Service(S3Client s3Client) {
         this.s3Client = s3Client;
@@ -83,7 +83,7 @@ public class S3Service {
                 .contentType("application/json")
                 .build();
 
-        // V2 needs an explicit RequestBody wrapper around the content
+        
         s3Client.putObject(request, RequestBody.fromString(json));
     }
 
